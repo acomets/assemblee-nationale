@@ -51,7 +51,7 @@ d3.json("node_link_data.json", function(error, graph) {
           .on("end", dragended));
 
   node.append("title")
-      .text(function(d) { return "Nom : " + d.id + "\nParti : " + d.parti; });
+      .text(function(d) { return "Nom : " + d.id + "\nParti : " + d.group; });
 
   simulation
       .nodes(graph.nodes)
