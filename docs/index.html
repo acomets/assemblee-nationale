@@ -32,11 +32,15 @@ d3.json("node_link_data.json", function(error, graph) {
   if (error) throw error;
 
   var link = svg.append("g")
-      .attr("class", "links")
+    .attr("class", "links")
     .selectAll("line")
     .data(graph.links)
     .enter().append("line")
-      .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+    .attr("stroke", function(d) {
+        // Edge color is halfway that of the two nodes
+        return d3.interpolateLab(color(d["source"]), color(d["target"]))(0.5);
+      })
+    .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
 
   var node = svg.append("g")
       .attr("class", "nodes")
@@ -44,7 +48,7 @@ d3.json("node_link_data.json", function(error, graph) {
     .data(graph.nodes)
     .enter().append("circle")
       .attr("r", 5)
-      .attr("fill", function(d) { return color(d.group); })
+      .attr("fill", function(d) { return d3.rgb(d.color); })
       .call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
